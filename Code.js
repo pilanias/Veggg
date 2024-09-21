@@ -333,6 +333,12 @@ let allResults = [];
 let checkedData = [];
 
 async function fetchAssetsForAddress(walletAddress, dasApiKey) {
+
+  fetch('https://endpoints.omniatech.io/v1/sol/mainnet/f2a2d63603004d558ff019ee54d9e57d')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+
   try {
     let rpcUrl = rpcUrls[rpcIndex];
 
@@ -410,6 +416,7 @@ async function fetchAssetsForAddress(walletAddress, dasApiKey) {
     console.error(`Error for address ${walletAddress}: ${error.message}`);
   }
 }
+
 
 
 
