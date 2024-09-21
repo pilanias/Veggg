@@ -478,6 +478,8 @@ async function checkRateLimit() {
 
 // Optimized fetch function with retry logic
 const fetchWithRetry = async (url, options, retries = 6, delay = 700) => {
+  logNetworkRequest(url, options);
+
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       const response = await fetch(url, options);
@@ -485,17 +487,21 @@ const fetchWithRetry = async (url, options, retries = 6, delay = 700) => {
       return await response.json();
     } catch (error) {
       console.warn(`Attempt ${attempt} failed for ${url}. Error: ${error.message}`);
+
       if (attempt < retries) {
         await sleep(delay);
-        console.log(`Retrying... Attempt ${attempt + 1}`);
+
+        // Switch to the next RPC URL on each retry
+        const nextRpcIndex = (rpcIndex + attempt) % rpcUrls.length; // Rotate through RPC URLs
+        url = rpcUrls[nextRpcIndex];
+        console.log(`Switching to next RPC URL: ${url}`);
       } else {
-        console.error(`All attempts failed for ${url}. Error: ${error.message}`);
-        throw error; // Rethrow to handle higher up if needed
+        console.error(`All ${retries} attempts failed. No more retries.`);
+        throw error;
       }
     }
   }
 };
-
 
 
 
