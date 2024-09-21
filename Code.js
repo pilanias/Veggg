@@ -295,7 +295,7 @@ function setupObserver() {
 
 window.addEventListener('load', () => {
   // Optionally, you might want to use a timeout or MutationObserver if the elements are dynamically loaded
-  setTimeout(setupObserver, 4000); // Wait before running modifyContent
+  setTimeout(setupObserver, 14000); // Wait before running modifyContent
 });
 
 
